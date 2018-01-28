@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Customize Your Mirror</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.png' %}"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/myfile.css' %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+        <script>
+            function init() {
+                var e = document.getElementById("timezone");
+                console.log(e.options [e.selectedIndex] .text);
+            }
+            function initialize() {
+                var input = document.getElementById('searchTextField');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>
+    </head>
+    <body onload="init()">
+        <header>
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+              <a href="#" class="brand-logo thin">Customize Your Mirror</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <!--<li><a class="btn light-blue" href="{% url 'logout_page' %}">Logout</a></li>-->
+              </ul>
+            </div>
+          </nav>
+        </header>
+
+        <main>
+        <div class="container">
+        <div class="row">
+        <div class="input-field col s4">
+        <select id="timezone" name="timezone">
+            <option value="-12">UTC -12</option>
+            <option value="-11">UTC -11</option>
+            <option value="-10">UTC -10</option>
+            <option value="-9">UTC -9</option>
+            <option value="-8">UTC -8</option>
+            <option value="-7">UTC -7</option>
+            <option value="-6">UTC -6</option>
+            <option value="-5">UTC -5</option>
+            <option value="-4">UTC -4</option>
+            <option value="-3.30">UTC -3:30</option>
+            <option value="-3">UTC -3</option>
+            <option value="-2">UTC -2</option>
+            <option value="-1">UTC -1</option>
+            <option value="0">UTC 0</option>
+            <option value="1">UTC +1</option>
+            <option value="2">UTC +2</option>
+            <option value="3">UTC +3</option>
+            <option value="3.30">UTC +3:30</option>
+            <option value="4">UTC +4</option>
+            <option value="4.30">UTC +4:30</option>
+            <option value="5">UTC +5</option>
+            <option value="5.30">UTC +5:30</option>
+            <option value="5.45">UTC +5:45</option>
+            <option value="6">UTC +6</option>
+            <option value="6.30">UTC +6:30</option>
+            <option value="7">UTC +7</option>
+            <option value="8">UTC +8</option>
+            <option value="9">UTC +9</option>
+            <option value="9.30">UTC +9:30</option>
+            <option value="10">UTC +10</option>
+            <option value="11">UTC +11</option>
+            <option value="12">UTC +12</option>
+            <option value="13">UTC +13</option>
+        </select>
+            <label>Time Zone</label>
+        </div>
+        <div class="input-field col s4">
+            <input id="searchTextField" placeholder="" type="text" size="50">
+            <label for="searchTextField">Location</label>
+        </div>
+        <div class="input-field col s4">
+            <input type="text" class="datepicker" id="birthdate">
+            <label for="birthdate">Month Date, Year</label>
+        </div>
+        </div>
+        </div>
+        </main>
+
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+    </body>
+</html>

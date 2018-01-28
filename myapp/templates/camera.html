@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Registration Part-2</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.png' %}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/myfile.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script>
+        var canvas, ctx, vd, tp, save, cancel;
+        function init() {
+            canvas = document.getElementById("myCanvas");
+            ctx = canvas.getContext('2d');
+            vd = document.getElementById("videoElement");
+            tp = document.getElementById("takepic");
+            save = document.getElementById("save");
+            cancel = document.getElementById("cancel");
+        }
+
+        function snapshot() {
+            ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+            var dataURL = canvas.toDataURL("image/png");
+            document.getElementById('hidden_field').value = dataURL;
+            vd.style.display="none";
+            tp.style.display="none";
+            canvas.style.display="block";
+            save.style.display="block";
+            cancel.style.display="block";
+        }
+
+        function revert() {
+            vd.style.display="block";
+            tp.style.display="block";
+            canvas.style.display="none";
+            save.style.display="none";
+            cancel.style.display="none";
+        }
+        function checkPath() {
+            document.getElementById("lala").style.display="block";
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <header>
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+              <a href="" class="brand-logo thin">Hello {{ username }}</a>
+              <a href="" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="btn light-blue" href="{% url 'logout_page' %}">Logout</a></li>
+              </ul>
+           <ul class="sidenav" id="mobile-demo">
+            <li><a href="{% url 'logout_page' %}">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main>
+        <div>
+            <center>
+            <span>Note: Picture registered should have good face visibility for better identification</span>
+            </center>
+        </div>
+        <br>
+      <div class="container">
+          <div class="row">
+              <center>
+                  <div class="col s12">
+                      <canvas id="myCanvas" width="600" height="450" style="display:none;"></canvas>
+                      <video autoplay="autoplay" id="videoElement">
+                      </video>
+                  </div>
+                  <form action="{% url 'camera_page' %}" method="post">
+                        {% csrf_token %}
+                        <input id="hidden_field" name="image_field" type="text" hidden/>
+                        <button id="takepic" class="btn black-text waves-effect transparent" type="button" onclick="snapshot();">Take Snapshot
+                        <i class="material-icons right">camera_alt</i>
+                        </button>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col l5 right">
+                                    <button style="display:none;" id="save" class="btn green waves-effect waves-light" type="submit" name="action">Save
+                                    <i class="material-icons right">check</i>
+                                    </button>
+                                </div>
+                                <div class="col l5 left">
+                                    <button style="display:none;" id="cancel" class="btn red" type="button" onclick="revert();">Cancel
+                                    <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                  </form>
+              </center>
+          </div>
+          <div class="row">
+              <div class="col s5">
+                  <hr>
+              </div>
+              <div class="col s2"><center><span>OR</span></center></div>
+              <div class="col s5">
+                  <hr>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col offset-s5">
+              <form action="{% url 'camera_page' %}" method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                  <div class="file-field input-field">
+                      <div class="btn transparent black-text">
+                        <span>Choose File</span>
+                        <input type="file" name="myfile" accept=".png, .jpg" onchange="checkPath();">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" style="border-bottom:none;">
+                      </div>
+                    </div>
+                  <button id ="lala" style="display:none;" class="btn green waves-effect" type="submit" name="action1">Save
+                    <i class="material-icons right">check</i>
+                    </button>
+              </form>
+              </div>
+          </div>
+      </div>
+    </main>
+    <script>
+        var video = document.querySelector("#videoElement");
+
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({video: true}, handleVideo, videoError);
+        }
+
+        function handleVideo(stream) {
+            video.src = window.URL.createObjectURL(stream);
+        }
+
+        function videoError(e) {
+            alert("Could not access webcam");
+        }
+    </script>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+</body>
+</html>

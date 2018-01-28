@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Smart Mirror</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.png' %}"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/myfile.css' %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <header>
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+              <a id="sitetitle" href="#" class="brand-logo truncate thin">Smart Mirror</a>
+              <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">DIY</a></li>
+                <li><a href="#">Raspberry Pi</a></li>
+                <li><a class="btn light-blue" href="{% url 'registration_page' %}">Register</a></li>
+              </ul>
+               <ul class="sidenav" id="mobile-demo">
+                <li><a href="#">DIY</a></li>
+                <li><a href="#">Raspberry Pi</a></li>
+                <li><a href="{% url 'registration_page' %}">Register</a></li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+
+        <main>
+        <div class="container">
+        <div class="row">
+            <br><br>
+        <div id="slideshow" class="col l6 slider card z-depth-4">
+          <ul class="slides">
+            <li>
+              <img src="{% static 'imgs/sm1.jpg' %}">
+            </li>
+              <li>
+              <img src="{% static 'imgs/sm2.jpg' %}">
+            </li>
+              <li>
+              <img src="{% static 'imgs/sm3.jpg' %}">
+            </li>
+          </ul>
+        </div>
+            <div class="col offset-l1 l4 s12">
+                <h5 id="signin" class="black-text right-align">Log In</h5>
+                <form action="{% url 'landing_page' %}" method="post">
+                    {% csrf_token %}
+                <div class="row">
+                    <span class="red-text center">{{ form.username.errors }}</span>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">supervisor_account</i>
+                        {{ form.username }}
+                        <label for="username">Username</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <span class="red-text center">{{ form.password.errors }}</span>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock_outline</i>
+                        {{ form.password }}
+                        <label for="password">Password</label>
+                    </div>
+                  </div>
+                    <center>
+                    <button class="btn waves-effect waves-light grey lighten-4 black-text" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                    </center>
+                    </form>
+            </div>
+        </div>
+        </div>
+        </main>
+
+        <footer class="page-footer transparent">
+              <div class="container footer-copyright transparent black-text">
+                  <a class="black-text" href="#">About Us</a>
+                    <span>&copy; Team Smart Mirror</span>
+                  <a class="black-text">Contact Info</a>
+              </div>
+        </footer>
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+    </body>
+</html>

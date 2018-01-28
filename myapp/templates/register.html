@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Registration-Smart Mirror</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.png' %}"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/myfile.css' %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <header>
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+              <a href="#" class="brand-logo thin">Register</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <!--<li><a class="btn light-blue" href="{% url 'logout_page' %}">Logout</a></li>-->
+              </ul>
+            </div>
+          </nav>
+        </header>
+
+        <main style="background-image: url({% static 'imgs/regbg2.jpeg' %});
+                    background-size: cover;
+                    background-repeat: no-repeat;">
+
+			<div class="card container" id="regform">
+				<div class="row">
+					<form class="col s12" action="{% url 'registration_page' %}" method="post">
+					    {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="tiny material-icons prefix">looks_one</i>
+                                {{ form.first_name }}
+                                <label for="first_name">Firstname</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <i class="tiny material-icons prefix">looks_two</i>
+                                {{ form.last_name }}
+                                <label for="last_name">Lastname</label>
+                            </div>
+                          </div>
+                        <div class="row">
+                              <span class="red-text center">{{ form.email.errors }}</span>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">drafts</i>
+                                {{ form.email }}
+                                <label for="email">Email</label>
+                            </div>
+                          </div>
+                        <div class="row">
+                            <span class="red-text center">{{ form.username.errors }}</span>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">people</i>
+                                {{ form.username }}
+                                <label for="username">Username</label>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <span class="red-text center">{{ form.password.errors }}</span>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock_outline</i>
+                                {{ form.password }}
+                                <label for="password1">Password</label>
+                            </div>
+                          </div>
+                            <div class="row">
+                              <span class="red-text center">{{ form.confirm_password.errors }}</span>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock</i>
+                                {{ form.confirm_password }}
+                                <label for="password2">Confirm Password</label>
+                            </div>
+                          </div>
+                            <center>
+                            <button class="btn waves-effect waves-light blue" type="submit" name="action">Next
+                                <i class="material-icons right">navigate_next</i>
+                            </button>
+                            </center>
+					</form>
+				</div>
+			</div>
+        </main>
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+    </body>
+</html>

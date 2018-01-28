@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Smart Mirror</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon.png' %}"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/myfile.css' %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+        <script>
+            var w,dt,q,ta,tz,al;
+            function init(){
+                w = document.getElementById("weather");
+                dt = document.getElementById("datetime");
+                q = document.getElementById("quote");
+                ta = document.getElementById("textarea");
+                tz = document.getElementById("timezone");
+                al = document.getElementById("alarm");
+                {% if weather is True %}
+                    w.checked=true;
+                {% endif %}
+                {% if date_time is True %}
+                    dt.checked=true;
+                {% endif %}
+                {% if quote is True %}
+                    q.checked=true;
+                {% endif %}
+                var t = "{{ customtext|linebreaksbr }}";
+                t = t.replace(/<br\s*[\/]?>/gi, "\r\n");
+                ta.value=t;
+                {% if alarm is not None %}
+                    al.value="{{ alarm }}"
+                {% endif %}
+                tz.value= "{{ timezone }}";
+                M.updateTextFields();
+            }
+            function initialize() {
+                var input = document.getElementById('searchTextField');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                input.value = "{{ location }}"
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+    </head>
+    <body onload="init();">
+        <header>
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+              <a href="#" class="brand-logo thin truncate">Dashboard</a>
+              <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="btn light-blue" href="{% url 'logout_page' %}">Logout</a></li>
+              </ul>
+               <ul class="sidenav" id="mobile-demo">
+                <li><a class="btn light-blue" href="{% url 'logout_page' %}">Logout</a></li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+
+        <main>
+            <form action="{% url 'dashboard_page' %}" method="post">
+                <div class="container">
+                    <h4>Widgets</h4>
+                    <hr>
+                    <div class="row">
+                        <div class="input-field col s12 offset-m2 m8 l4">
+                            <div class="card">
+                                <div class="card-image">
+                                  <img src="{% static 'imgs/weather_card.jpg' %}">
+                                  <span class="card-title black-text">Weather</span>
+                                </div>
+                              <label>
+                                <input id="weather" name="weather" type="checkbox" class="filled-in"/>
+                                <span>Choose</span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="input-field col s12 offset-m2 m8 l4">
+                            <div class="card">
+                                <div class="card-image">
+                                  <img src="{% static 'imgs/date_time.jpg' %}">
+                                  <span class="card-title black-text">Date and Time</span>
+                                </div>
+                              <label>
+                                <input id="datetime" name="datetime" type="checkbox" class="filled-in"/>
+                                <span>Choose</span>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="input-field col s12 offset-m2 m8 l4">
+                            <div class="card">
+                                <div class="card-image">
+                                  <img src="{% static 'imgs/quote_card.jpg' %}">
+                                  <span class="card-title">Quotes</span>
+                                </div>
+                              <label>
+                                <input id="quote" name="quote" type="checkbox" class="filled-in" />
+                                <span>Choose</span>
+                              </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 offset-m2 m8 l4">
+                          <div class="card">
+                              <div class="card-title">
+                                  <span>Notes</span>
+                                  <label class="right" style="size:10px;">* max 200 characters only</label>
+                              </div>
+                              <hr>
+                              <textarea id="textarea" name="customtext" class="materialize-textarea" maxlength="216" rows="5" style="height:100%;border-bottom:none;box-shadow:none;background-image:
+                                linear-gradient(to right, white 10px, transparent 10px),
+                                linear-gradient(to left, white 10px, transparent 10px),
+                                repeating-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);line-height: 31px;
+                                padding: 8px 10px;">
+                              </textarea>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <h4>Settings</h4>
+                    <hr>
+                    <div class="row" id="settingform">
+                        <div class="input-field col l12 m12 s12">
+                            <i class="material-icons prefix tiny">public</i>
+                            <select id="timezone" name="timezone">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="-12.0">UTC -12</option>
+                                <option value="-11.0">UTC -11</option>
+                                <option value="-10.0">UTC -10</option>
+                                <option value="-9.0">UTC -9</option>
+                                <option value="-8.0">UTC -8</option>
+                                <option value="-7.0">UTC -7</option>
+                                <option value="-6.0">UTC -6</option>
+                                <option value="-5.0">UTC -5</option>
+                                <option value="-4.0">UTC -4</option>
+                                <option value="-3.30">UTC -3:30</option>
+                                <option value="-3.0">UTC -3</option>
+                                <option value="-2.0">UTC -2</option>
+                                <option value="-1.0">UTC -1</option>
+                                <option value="0.0">UTC 0</option>
+                                <option value="1.0">UTC +1</option>
+                                <option value="2.0">UTC +2</option>
+                                <option value="3.0">UTC +3</option>
+                                <option value="3.30">UTC +3:30</option>
+                                <option value="4.0">UTC +4</option>
+                                <option value="4.30">UTC +4:30</option>
+                                <option value="5.0">UTC +5</option>
+                                <option value="5.30">UTC +5:30</option>
+                                <option value="5.45">UTC +5:45</option>
+                                <option value="6.0">UTC +6</option>
+                                <option value="6.30">UTC +6:30</option>
+                                <option value="7.0">UTC +7</option>
+                                <option value="8.0">UTC +8</option>
+                                <option value="9.0">UTC +9</option>
+                                <option value="9.30">UTC +9:30</option>
+                                <option value="10.0">UTC +10</option>
+                                <option value="11.0">UTC +11</option>
+                                <option value="12.0">UTC +12</option>
+                                <option value="13.0">UTC +13</option>
+                            </select>
+                            <label for="timezone">My time zone is: </label>
+                            <p class="green-text darken-4">Current value is UTC {{timezone}}</p>
+                        </div>
+                        <div class="input-field col">
+                            <i class="material-icons prefix tiny">location_on</i>
+                            <input id="searchTextField" type="text" size="75" name="location">
+                        </div>
+                        <div class="input-field col l12 m12 s12">
+                            <i class="material-icons prefix tiny">alarm</i>
+                            <input type="text" class="timepicker" id="alarm" name="alarm">
+                            <label for="alarm">Wake me up at:   </label>
+                        </div>
+                    </div>
+                </div>
+                <center>
+                    <button class="btn indigo waves-effect" type="submit" name="action1">Update
+                    <i class="material-icons right">update</i>
+                    </button>
+                </center>
+            </form>
+        </main>
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/myscript.js' %}"></script>
+    </body>
+</html>
